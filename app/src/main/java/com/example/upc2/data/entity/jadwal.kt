@@ -1,6 +1,7 @@
 package com.example.upc2.data.entity
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "jadwal")
