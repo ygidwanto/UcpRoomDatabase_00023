@@ -7,7 +7,7 @@ import com.example.upc2.data.entity.jadwal
 import kotlinx.coroutines.flow.Flow
 
 //
-class LocalRepositorydokter(
+class LocalRepositoryDokter(
     private val dokterDao: dokterDao
 ) {
     suspend fun insertDokter(dokter: dokter) {
