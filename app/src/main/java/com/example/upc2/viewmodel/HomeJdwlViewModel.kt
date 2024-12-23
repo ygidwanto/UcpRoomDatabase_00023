@@ -8,7 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted
 
-class HomeJadwalViewModel(
+class HomeJdwlViewModel(
     private val repositoryJadwal: RepositoryJadwal
 ) : ViewModel() {
 
