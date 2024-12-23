@@ -9,16 +9,15 @@ import kotlinx.coroutines.flow.Flow
 //
 class LocalRepositoryDokter(
     private val dokterDao: dokterDao
-) {
-    suspend fun insertDokter(dokter: dokter) {
+) : RepositoryDokter{
+    override suspend fun insertDokter(dokter: dokter) {
         dokterDao.insertDokter(dokter)
     }
-
-    fun getAllDokter(): Flow<List<dokter>> {
+    override fun getAllDokter(): Flow<List<dokter>> {
         return dokterDao.getAllDokter()
     }
 
-    fun getDokter(id: String): Flow<dokter> {
+    override fun getDokter(id: String): Flow<dokter> {
         return dokterDao.getDokter(id)
     }
 }
@@ -26,24 +25,24 @@ class LocalRepositoryDokter(
 
 class LocalRepositoryJadwal(
     private val jadwalDao: jadwalDao
-) {
-    suspend fun insertJadwal(jadwal: jadwal) {
+) : RepositoryJadwal{
+    override suspend fun insertJadwal(jadwal: jadwal) {
         jadwalDao.insertJadwal(jadwal)
     }
 
-    fun getAllJadwal(): Flow<List<jadwal>> {
+    override fun getAllJadwal(): Flow<List<jadwal>> {
         return jadwalDao.getAllJadwal()
     }
 
-    fun getJadwalById(id: String): Flow<jadwal> {
+    override fun getJadwalById(id: String): Flow<jadwal> {
         return jadwalDao.getAllJadwal(id)
     }
 
-    suspend fun deleteJadwal(jadwal: jadwal) {
+   override suspend fun deleteJadwal(jadwal: jadwal) {
         jadwalDao.deleteJadwal(jadwal)
     }
 
-    suspend fun updateJadwal(jadwal: jadwal) {
+    override suspend fun updateJadwal(jadwal: jadwal) {
         jadwalDao.updateJadwal(jadwal)
     }
 }
