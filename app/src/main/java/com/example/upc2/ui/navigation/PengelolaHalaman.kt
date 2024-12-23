@@ -9,12 +9,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.upc2.ui.viewmodel.HomeDokterUiState
-import com.example.upc2.ui.viewmodel.UpdateJadwalViewModel
 import com.example.upc2.viewmodel.DetJdwlViewModel
-import com.example.upc2.viewmodel.DetailJadwalUiState
-import com.example.upc2.ui.view.dokter.InsertDtrView
-import com.example.upc2.ui.view.jadwal.DetailJadwalUiState
-import com.example.upc2.ui.view.jadwal.UpdateJadwalViewModel
+import com.example.upc2.ui.view.InsertDokterView
+import com.example.upc2.ui.view.jadwal.DetailJadwalView
+import com.example.upc2.ui.view.jadwal.UpdateJadwalView
+import com.example.upc2.ui.navigation.AlamatNAvigasi
+import com.example.upc2.ui.navigation.DestinasiJadwal
+import com.example.upc2.ui.navigation.DestinasiUpdateJadwal
+import com.example.upc2.view.DetailJadwalView
+import com.example.upc2.view.InsertDokterView
+import com.example.upc2.view.UpdateJadwalView
 
 @Composable
 fun PengelolaHalaman(
@@ -28,11 +32,11 @@ fun PengelolaHalaman(
             route = AlamatNAvigasi.DestinasiDokter.route
         ) {
             HomeDokterUiState(
-                onDetailClick = { id ->
+                onDetailClick = { id ->  // Navigate to detail dokter screen
                     navController.navigate("${AlamatNAvigasi.DestinasiDokter.route}/$id")
                     println("PengelolaHalaman: nim = $id")
                 },
-                onAddDokter = {
+                onAddDokter = { // Navigate to Insert Dokter screen
                     navController.navigate(AlamatNAvigasi.DestinasiDokter.route)
                 },
                 modifier = modifier
@@ -41,9 +45,9 @@ fun PengelolaHalaman(
 
         // Insert Dokter screen
         composable(
-            route = AlamatNAvigasi.DestinasiInsertDokter.route
+            route = AlamatNAvigasi.DestinasiDokter.route
         ) {
-            InsertDtrView(
+            InsertDokterView(
                 onBack = {
                     navController.popBackStack()
                 },
@@ -56,28 +60,26 @@ fun PengelolaHalaman(
 
         // Destinasi Jadwal screen with arguments
         composable(
-            DestinasiJadwal.routeWithArg,
+            DestinasiJadwal.route,
             arguments = listOf(
                 navArgument(DestinasiJadwal.id) {
                     type = NavType.StringType
                 }
             )
         ) {
-            val id = it.arguments?.getString(DestinasiJadwal.id)
+            val id = it.arguments?.getString(DestinasiJadwal.id)  // Extract id from arguments
             id?.let { idValue ->
-                DetJdwlViewModel(
-                    id = idValue
-                )
-                DetailJadwalUiState(
+                DetJdwlViewModel(id = idValue) // Initialize ViewModel for jadwal
+                DetailJadwalView(
                     onBack = {
-                        navController.popBackStack()
+                        navController.popBackStack()  // Go back onBack click
                     },
                     onEditClick = {
-                        navController.navigate("${DestinasiJadwal.route}/$idValue")
+                        navController.navigate("${DestinasiJadwal.route}/$idValue")  // Navigate to update page
                     },
                     modifier = modifier,
                     onDeleteClick = {
-                        navController.popBackStack()
+                        navController.popBackStack()  // Handle delete action
                     }
                 )
             }
@@ -92,14 +94,14 @@ fun PengelolaHalaman(
                 }
             )
         ) {
-            val idJadwal = it.arguments?.getString(DestinasiUpdateJadwal.ID_JADWAL)
+            val idJadwal = it.arguments?.getString(DestinasiUpdateJadwal.ID_JADWAL)  // Get ID from arguments
             idJadwal?.let { id ->
-                UpdateJadwalViewModel(
+                UpdateJadwalView(
                     onBack = {
-                        navController.popBackStack()
+                        navController.popBackStack()  // Go back onBack click
                     },
                     onNavigate = {
-                        navController.popBackStack()
+                        navController.popBackStack()  // Navigate back after update
                     },
                     modifier = modifier
                 )
