@@ -12,7 +12,7 @@ class HomeDokterViewModel(
     private val repositoryDokter: RepositoryDokter
 ) : ViewModel() {
 
-    // StateFlow to observe UI state
+
     val homeDokterUiState: StateFlow<HomeDokterUiState> = repositoryDokter.getAllDokter()
         .map { listDokter ->
             HomeDokterUiState(
@@ -21,8 +21,8 @@ class HomeDokterViewModel(
             )
         }
         .onStart {
-            emit(HomeDokterUiState(isLoading = true))  // Show loading before fetching data
-            delay(900)  // Optional: delay for loading animation
+            emit(HomeDokterUiState(isLoading = true))
+            delay(900)
         }
         .catch { exception ->
             emit(
