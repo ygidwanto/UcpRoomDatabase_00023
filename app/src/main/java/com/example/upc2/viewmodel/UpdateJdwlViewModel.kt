@@ -26,14 +26,16 @@ class UpdateJadwalViewModel(
     var snackBarMessage by mutableStateOf<String?>(null)
     var isEntryValid by mutableStateOf(true)
 
-    private val _idJadwal: String = checkNotNull(savedStateHandle[DestinasiUpdateJadwal.ID_JADWAL])
+    private val _idJadwal: String? = savedStateHandle[DestinasiUpdateJadwal.ID_JADWAL]
 
     init {
-        viewModelScope.launch {
-            val jadwalEntity = repositoryJadwal.getJadwalById(_idJadwal)
-                .filterNotNull()
-                .first()
-            loadJadwalData(jadwalEntity)
+        if (_idJadwal != null) {
+            viewModelScope.launch {
+                val jadwalEntity = repositoryJadwal.getJadwalById(_idJadwal)
+                    .filterNotNull()
+                    .first()
+                loadJadwalData(jadwalEntity)
+            }
         }
     }
 
@@ -66,7 +68,7 @@ class UpdateJadwalViewModel(
                 try {
                     repositoryJadwal.updateJadwal(
                         jadwal(
-                            id = _idJadwal,
+                            id = _idJadwal ?: "",
                             NamaDokter = namaDokter,
                             NamaPasien = namaPasien,
                             NoHp = noHp,
@@ -82,7 +84,34 @@ class UpdateJadwalViewModel(
         }
     }
 
+    // Fungsi untuk menyimpan data baru
+    fun saveData(): Boolean {
+        return if (validateFields()) {
+            viewModelScope.launch {
+                try {
+                    repositoryJadwal.updateJadwal(
+                        jadwal(
+                            id = "", // ID akan dibuat otomatis jika kosong
+                            NamaDokter = namaDokter,
+                            NamaPasien = namaPasien,
+                            NoHp = noHp,
+                            TanggalKonsultasi = tanggalKonsultasi,
+                            Status = status
+                        )
+                    )
+                    snackBarMessage = "Data berhasil disimpan"
+                } catch (e: Exception) {
+                    snackBarMessage = "Data gagal disimpan: ${e.message}"
+                }
+            }
+            true
+        } else {
+            false
+        }
+    }
+
     fun resetSnackBarMessage() {
         snackBarMessage = null
     }
 }
+

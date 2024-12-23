@@ -28,5 +28,5 @@ object PenyediaViewModel {
     }
 }
 
-fun CreationExtras.KrsApp(): RsApp =
+fun CreationExtras.RsApp(): RsApp =
     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as RsApp)
